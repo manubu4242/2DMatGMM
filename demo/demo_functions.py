@@ -73,6 +73,6 @@ def remove_vignette(
     Returns:
         (NxMx3 Array): The Image without the Vignette
     """
-    image_no_vigentte = image / flatfield * cv2.mean(flatfield)[:-1]
+    image_no_vigentte = (image / flatfield) * cv2.mean(flatfield)[:-1]
     image_no_vigentte[image_no_vigentte > max_background_value] = max_background_value
     return np.asarray(image_no_vigentte, dtype=np.uint8)
