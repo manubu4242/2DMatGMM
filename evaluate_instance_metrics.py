@@ -13,11 +13,10 @@ register_all_datasets()
 FILE_DIR = os.path.dirname(os.path.abspath(__file__))
 CONTRAST_PATH_ROOT = os.path.join(FILE_DIR, "GMMDetector", "trained_parameters")
 METRIC_PATH = os.path.join(FILE_DIR, "Metrics")
-os.makedirs(METRIC_PATH, exist_ok=True)
+os.makedirs(METRIC_PATH, exist_ok=True) 
 
 MATERIALS = [
-    "WSe2",
-    "Graphene",
+    "MoTe2 2H-1T"
 ]
 
 for material in MATERIALS:

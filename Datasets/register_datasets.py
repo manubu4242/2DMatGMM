@@ -37,7 +37,7 @@ def register_dataset(
 def register_all_datasets():
     dataset_root = os.path.join(os.path.dirname(__file__), "GMMDetectorDatasets")
 
-    for material in ["Graphene", "WSe2"]:
+    for material in ["MoTe2 2H-1T"]:
         if os.path.isdir(os.path.join(dataset_root, material)):
             register_dataset(
                 dataset_root,

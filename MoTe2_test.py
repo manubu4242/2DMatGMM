@@ -1,45 +1,21 @@
-import argparse
-import json
-import os
+from Image_Analysis import *
 
-import cv2
-import numpy as np
+model_path = r"C:\Users\bussi\INRS\2DMatGMM\GMMDetector\trained_parameters\Graphene_GMM.json"
 
-import matplotlib.pyplot as plt
+flatfield_path = r"C:\Users\bussi\INRS\2DMatGMM\Datasets\GMMDetectorDatasets\WB_calibration_graphene\purple\flatfield.png"
 
-from demo.demo_functions import visualise_flakes
-from demo.demo_functions import remove_vignette
-
-from GMMDetector import MaterialDetector
-
-with open("C:/Users/bussi/INRS/2DMatGMM/GMMDetector/contrast_data_2H_oversens.json") as f:
-
-    contrast_dict = json.load(f)
+images_path = r"C:\Users\bussi\INRS\2DMatGMM\Datasets\GMMDetectorDatasets\WB_calibration_graphene\purple"
 
 
-model = MaterialDetector(
-    contrast_dict=contrast_dict,
-    size_threshold=150,
-    standard_deviation_threshold=5,
-    used_channels="BGR"
-)
+Test = Image_Analysis(images_path, flatfield_path)
+Test.Init_GMM_Detector(model_path)
+Test.Pre_Process()
+Test.get_Mean_Background_Value()
 
-flatfield = cv2.imread("C:/Users/bussi/INRS/flatfield.png")
+print()
+Dataset_path = r"C:\Users\bussi\INRS\2DMatGMM\Datasets\GMMDetectorDatasets\Graphene\train_images\3b2fa580-860c-4eb7-a932-cc0a599dc4ad.jpg"
 
-image_names = os.listdir("C:/Users/bussi/INRS/2DMatGMM/Datasets/GMMDetectorDatasets/MoTe2 2H/train_images")
+Test2 = Image_Analysis(Dataset_path, flatfield_path, image_dir=False)
+Test2.Init_GMM_Detector(model_path)
+Test2.get_Mean_Background_Value()
 
-for name in image_names:
-
-    image_path = os.path.join("C:/Users/bussi/INRS/2DMatGMM/Datasets/GMMDetectorDatasets/MoTe2 2H/train_images", name)
-    image = cv2.imread(image_path)
-
-    image = remove_vignette(image, flatfield)
-
-    flake = model.detect_flakes(image)
-
-    overlay = visualise_flakes(flake, image, 0)
-
-    plt.figure(figsize=(10, 10))
-    plt.imshow(overlay[:, :, ::-1])
-    plt.axis("off")
-    plt.show()
